@@ -54,12 +54,12 @@ class KNNClassifier:
         distances, np array (num_test_samples, num_train_samples) - array
            with distances between each test and each train sample
         """
+        dist = np.zeros([X.shape[0], self.train_X.shape[0]])
+        for i in range(X.shape[0]):
+            for j in range(self.train_X.shape[0]):
+                dist[i][j] = np.sum(np.abs(X[i] - self.train_X[j]))
+        return dist
         
-        """
-        YOUR CODE IS HERE
-        """
-        pass
-
 
     def compute_distances_one_loop(self, X):
         """
@@ -73,11 +73,10 @@ class KNNClassifier:
         distances, np array (num_test_samples, num_train_samples) - array
            with distances between each test and each train sample
         """
-
-        """
-        YOUR CODE IS HERE
-        """
-        pass
+        dist = np.zeros([X.shape[0], self.train_X.shape[0]])
+        for i in range(X.shape[0]):
+            dist[i] = (np.sum(np.abs(X[i] - self.train_X[np.newaxis, :, :]), axis = 2)).reshape(self.train_X.shape[0])
+        return dist
 
 
     def compute_distances_no_loops(self, X):
@@ -92,11 +91,11 @@ class KNNClassifier:
         distances, np array (num_test_samples, num_train_samples) - array
            with distances between each test and each train sample
         """
-
-        """
-        YOUR CODE IS HERE
-        """
-        pass
+        if len(X) == 0:
+            raise ValueError('Array for prediction is empty')
+        dist = np.zeros([X.shape[0], self.train_X.shape[0]])
+        dist = (np.sum(np.abs(X[:, np.newaxis, :] - self.train_X[np.newaxis, :, :]), axis = 2)).reshape([X.shape[0], self.train_X.shape[0]])
+        return dist
 
 
     def predict_labels_binary(self, distances):
@@ -114,11 +113,9 @@ class KNNClassifier:
         n_train = distances.shape[1]
         n_test = distances.shape[0]
         prediction = np.zeros(n_test)
-
-        """
-        YOUR CODE IS HERE
-        """
-        pass
+        
+        prediction = self.train_y[np.argmin(distances, axis = 1)]
+        return prediction
 
 
     def predict_labels_multiclass(self, distances):
