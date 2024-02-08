@@ -97,7 +97,7 @@ class KNNClassifier:
         dist = (np.sum(np.abs(X[:, np.newaxis, :] - self.train_X[np.newaxis, :, :]), axis = 2)).reshape([X.shape[0], self.train_X.shape[0]])
         return dist
 
-
+    
     def predict_labels_binary(self, distances):
         """
         Returns model predictions for binary classification case
@@ -109,14 +109,20 @@ class KNNClassifier:
         pred, np array of bool (num_test_samples) - binary predictions 
            for every test sample
         """
-
         n_train = distances.shape[1]
         n_test = distances.shape[0]
         prediction = np.zeros(n_test)
         
-        prediction = self.train_y[np.argmin(distances, axis = 1)]
+        sorted_dist_idx = np.argsort(distances, axis = 1)
+        for i in range(n_test):
+            k_neighbs_idx = sorted_dist_idx[i][:self.k]
+            k_neighbs_y = self.train_y[k_neighbs_idx]
+            most_freq_class = np.bincount(k_neighbs_y).argmax()
+            prediction[i] = most_freq_class
         return prediction
-
+    
+    
+    
 
     def predict_labels_multiclass(self, distances):
         """
@@ -137,4 +143,14 @@ class KNNClassifier:
         """
         YOUR CODE IS HERE
         """
-        pass
+        n_train = distances.shape[1]
+        n_test = distances.shape[0]
+        prediction = np.zeros(n_test)
+        
+        sorted_dist_idx = np.argsort(distances, axis = 1)
+        for i in range(n_test):
+            k_neighbs_idx = sorted_dist_idx[i][:self.k]
+            k_neighbs_y = self.train_y[k_neighbs_idx]
+            most_freq_class = np.bincount(k_neighbs_y).argmax()
+            prediction[i] = most_freq_class
+        return prediction

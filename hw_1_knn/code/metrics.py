@@ -53,7 +53,7 @@ def binary_classification_metrics(y_pred, y_true):
         f1 = 1
     else:
         f1 = 2*TP/ (2*TP + FP + FN) # 2 * (precision * recall) / (precision + recall) 
-    print(f'Accuracy = {accuracy}\nPrecision = {precision}\nRecall = {recall}\nF1-score = {f1}')   
+    #print(f'Accuracy = {accuracy}\nPrecision = {precision}\nRecall = {recall}\nF1-score = {f1}')   
     return accuracy, precision, recall, f1
 
 
@@ -66,11 +66,8 @@ def multiclass_accuracy(y_pred, y_true):
     Returns:
     accuracy - ratio of accurate predictions to total samples
     """
-
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    accuracy = (y_pred == y_true).sum()/y_true.shape[0]
+    return accuracy
 
 
 def r_squared(y_pred, y_true):
