@@ -111,7 +111,7 @@ class KNNClassifier:
         """
         n_train = distances.shape[1]
         n_test = distances.shape[0]
-        prediction = np.zeros(n_test)
+        prediction = np.zeros(n_test, np.int)
         
         sorted_dist_idx = np.argsort(distances, axis = 1)
         for i in range(n_test):
@@ -136,16 +136,9 @@ class KNNClassifier:
            for every test sample
         """
 
-        n_train = distances.shape[0]
-        n_test = distances.shape[0]
-        prediction = np.zeros(n_test, np.int)
-
-        """
-        YOUR CODE IS HERE
-        """
         n_train = distances.shape[1]
         n_test = distances.shape[0]
-        prediction = np.zeros(n_test)
+        prediction = np.zeros(n_test, np.int)
         
         sorted_dist_idx = np.argsort(distances, axis = 1)
         for i in range(n_test):

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def binary_classification_metrics(y_pred, y_true):
+def binary_classification_metrics(y_true, y_pred):
     """
     Computes metrics for binary classification
     Arguments:
@@ -15,9 +15,6 @@ def binary_classification_metrics(y_pred, y_true):
     # https://en.wikipedia.org/wiki/Precision_and_recall
     # https://en.wikipedia.org/wiki/F1_score
 
-    """
-    YOUR CODE IS HERE
-    """
     TP = ((y_pred == 1) & (y_true == 1)).sum()
     TN = ((y_pred == 0) & (y_true == 0)).sum()
     FP = ((y_pred == 1) & (y_true == 0)).sum()
@@ -29,7 +26,7 @@ def binary_classification_metrics(y_pred, y_true):
     #When calculating precision, 0/0 may occur in 2 cases: 
     #1) when the model always predicts Negative (TP=0, FP =0), then it is logical to put 0; 
     #2) when there was no positive objects at all in the test and they were not predicted, then it seems right to put 1 
-    #(since all test objects (<=> all zeros) were predicted correctly (<=> all zeros)). We implement checks:
+    #(since all test objects (<=> all zeros) were predicted correctly (<=> all zeros)). We'll implement it:
     if (np.sum((y_true == 0)) == y_true.shape) & (np.sum((y_pred == 0)) == y_pred.shape):
         precision = 1 #it might be usefull to call a warning that there is only 0 in the test here.
     elif TP == 0 & FP == 0:
@@ -50,14 +47,13 @@ def binary_classification_metrics(y_pred, y_true):
     #and then the model could not predict False Negative (=> FN = 0),
     #but it did not predict positive also (FP = 0)
     if (np.sum((y_true == 0)) == y_true.shape) & (np.sum((y_pred == 0)) == y_pred.shape):
-        f1 = 1
+        f1 = 1 #it might be usefull to call a warning that there is only 0 in the test here.
     else:
         f1 = 2*TP/ (2*TP + FP + FN) # 2 * (precision * recall) / (precision + recall) 
-    #print(f'Accuracy = {accuracy}\nPrecision = {precision}\nRecall = {recall}\nF1-score = {f1}')   
     return accuracy, precision, recall, f1
 
 
-def multiclass_accuracy(y_pred, y_true):
+def multiclass_accuracy(y_true, y_pred):
     """
     Computes metrics for multiclass classification
     Arguments:
@@ -79,11 +75,10 @@ def r_squared(y_pred, y_true):
     Returns:
     r2 - r-squared value
     """
-
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    n = y_true.shape[0]
+    y_av = np.mean(y_true)
+    r2 = 1.0 - (np.sum(np.power((y_true - y_pred), 2))) / (np.sum(np.power((y_true - y_av), 2)))
+    return r2
 
 
 def mse(y_pred, y_true):
@@ -95,11 +90,9 @@ def mse(y_pred, y_true):
     Returns:
     mse - mean squared error
     """
-
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    n = y_true.shape[0]
+    mse = np.sum(np.power((y_true - y_pred), 2)) / n
+    return mse
 
 
 def mae(y_pred, y_true):
@@ -111,9 +104,7 @@ def mae(y_pred, y_true):
     Returns:
     mae - mean absolut error
     """
-
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    n = y_true.shape[0]
+    mae = np.sum(np.abs(y_true - y_pred)) / n
+    return mae
     
