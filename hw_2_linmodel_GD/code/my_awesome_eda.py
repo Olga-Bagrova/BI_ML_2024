@@ -88,10 +88,10 @@ def run_eda(df):
     else:
         print('\nThere are', duplicated_number, 'duplicated rows in this dataframe.')
     
-    
+
     fraction_of_na = df.isnull().sum(axis = 0) / len(df)
     clrs = ['#286619' if (x < 0.5) else '#9B075C' for x in fraction_of_na]
-    sns.barplot(x = fraction_of_na.index, y = fraction_of_na, palette = clrs)
+    sns.barplot(x = fraction_of_na.index, y = fraction_of_na)
     plt.ylabel('Fraction of missing values')
     plt.xlabel('Variables')
     plt.title('Missing data')
@@ -99,7 +99,7 @@ def run_eda(df):
     plt.tight_layout()
     plt.show()
 
-    correlations = df.corr(method='spearman') 
+    correlations = df[numeric_columns].corr() 
     plt.figure(figsize = (10,10))
     sns.heatmap(correlations, square = True, annot = True, linewidths = 0.25)
     plt.title("Correlation matrix for features", size = 20)
